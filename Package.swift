@@ -20,6 +20,7 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/outfoxx/PotentCodables", from: "3.0.2"),
         .package(url: "https://github.com/OperatorFoundation/Datable", branch: "main"),
+        .package(url: "https://github.com/OperatorFoundation/SwiftHexTools", branch: "main"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -28,12 +29,19 @@ let package = Package(
             name: "Ice",
             dependencies: [
                 "PotentCodables",
+
                 "Datable",
+                "SwiftHexTools",
             ]
         ),
         .testTarget(
             name: "IceTests",
-            dependencies: ["Ice"]),
+            dependencies: [
+                "SwiftHexTools",
+                
+                "Ice"
+            ]
+        ),
     ],
     swiftLanguageVersions: [.v5]
 )

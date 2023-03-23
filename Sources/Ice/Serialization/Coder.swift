@@ -9,7 +9,7 @@ import Foundation
 
 import PotentCodables
 
-public class IceEncoder: ValueEncoder<BasicValue, IceEncoderTransform>
+public class IceEncoder: ValueEncoder<IcedValue, IceEncoderTransform>
 {
     public override var options: IceEncoderOptions
     {
@@ -17,11 +17,10 @@ public class IceEncoder: ValueEncoder<BasicValue, IceEncoderTransform>
     }
 }
 
-public class IceDecoder: ValueDecoder<BasicValue, IceDecoderTransform>
+public class IceDecoder: ValueDecoder<IcedValue, IceDecoderTransform>
 {
     public override var options: IceDecoderOptions
     {
         return IceDecoderOptions()
     }
 }
-

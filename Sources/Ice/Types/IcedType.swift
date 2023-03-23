@@ -210,6 +210,80 @@ extension BasicType: MaybeDatable
     }
 }
 
+public enum LeafType: Int, Codable
+{
+    case Basic = 16
+    case String = 17
+}
+
+extension LeafType: MaybeDatable
+{
+    public var data: Data
+    {
+        return intToByteData(self.rawValue)
+    }
+
+    public init?(data: Data)
+    {
+        guard let int = byteDataToInt(data) else
+        {
+            return nil
+        }
+
+        self.init(rawValue: int)
+    }
+}
+
+public enum IcedType: Int, Codable
+{
+    case Branch = 18
+    case Leaf = 19
+}
+
+extension IcedType: MaybeDatable
+{
+    public var data: Data
+    {
+        return intToByteData(self.rawValue)
+    }
+
+    public init?(data: Data)
+    {
+        guard let int = byteDataToInt(data) else
+        {
+            return nil
+        }
+
+        self.init(rawValue: int)
+    }
+}
+
+public enum ContainerType: Int, Codable
+{
+    case Array = 20
+    case Dictionary = 21
+    case Struct = 22
+    case Class = 23
+}
+
+extension ContainerType: MaybeDatable
+{
+    public var data: Data
+    {
+        return intToByteData(self.rawValue)
+    }
+
+    public init?(data: Data)
+    {
+        guard let int = byteDataToInt(data) else
+        {
+            return nil
+        }
+
+        self.init(rawValue: int)
+    }
+}
+
 //
 //public struct StringType: Codable
 //{
