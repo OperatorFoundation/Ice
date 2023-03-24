@@ -138,7 +138,7 @@ final class IceTests: XCTestCase
         let input: Double = 1.0
         let encoder = IceEncoder()
         let result = try encoder.encode(input)
-        print(result)
+        print(result.hex)
 
         let decoder = IceDecoder()
         let output = try decoder.decode(Double.self, from: result)
@@ -151,7 +151,7 @@ final class IceTests: XCTestCase
         let input: Float = 1.0
         let encoder = IceEncoder()
         let result = try encoder.encode(input)
-        print(result)
+        print(result.hex)
 
 
         let decoder = IceDecoder()

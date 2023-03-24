@@ -245,12 +245,12 @@ extension DictionaryValue: MaybeDatable
         }
 
         // Read the first part of the header, which has the count of items
-        let lengthData = Data(data[0..<8])
+        let numEntriesData = Data(data[0..<8])
         var rest = Data(data[8...])
-        let uint64 = UInt64(data: lengthData)
-        let length = Int(uint64)
+        let uint64 = UInt64(data: numEntriesData)
+        let numEntries = Int(uint64)
 
-        let headerSize = length * 8 * 2
+        let headerSize = numEntries * 8 * 2
         guard rest.count >= headerSize else // Check if there is room for the element size header
         {
             return nil
@@ -308,12 +308,13 @@ extension DictionaryValue: MaybeDatable
     {
         let datas = self.entries.flatMap { return [$0.key.data, $0.value.data] }
         let dataBlock = datas.reduce(Data(), (+))
-        let lengths = datas.map { $0.count }
-        let lengthDatas = lengths.map { $0.data }.reduce(Data(), (+))
-        let totalLength = lengths.reduce(0, (+))
-        let totalLengthData = totalLength.data
+        let lengths = datas.map { UInt64($0.count) }
+        let lengthDatas = lengths.map { $0.data }
+        let lengthBlock = lengthDatas.reduce(Data(), (+))
+        let numEntries = UInt64(self.entries.count)
+        let numEntriesData = numEntries.data
 
-        return totalLengthData + lengthDatas + dataBlock
+        return numEntriesData + lengthBlock + dataBlock
     }
 }
 
@@ -522,11 +523,6 @@ extension BasicValue: MaybeDatable
                 }
 
             case .Float:
-                guard data.count == 4 else
-                {
-                    return nil
-                }
-
                 guard let value = dataToFloat(Data(data[1...])) else
                 {
                     return nil
@@ -536,11 +532,6 @@ extension BasicValue: MaybeDatable
                 return
 
             case .Double: // FIXME
-                guard data.count == 8 else
-                {
-                    return nil
-                }
-
                 guard let value = dataToDouble(Data(data[1...])) else
                 {
                     return nil
